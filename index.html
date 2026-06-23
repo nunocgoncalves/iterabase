@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Sans+Condensed:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:#FFFFFF;color:#0C1017;font-family:'IBM Plex Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+  a{color:inherit;text-decoration:none;}
+  ::selection{background:rgba(45,130,247,0.22);}
+  @keyframes ib-pulse{0%,100%{opacity:1;}50%{opacity:.32;}}
+  @keyframes ib-glow{0%,100%{opacity:.6;}50%{opacity:.12;}}
+</style>
+</helmet>
+
+<div style="font-family:'IBM Plex Sans',system-ui,sans-serif;">
+
+  <!-- ===== NAV ===== -->
+  <header style="position:sticky;top:0;z-index:40;background:rgba(255,255,255,0.82);backdrop-filter:blur(10px);border-bottom:1px solid #E3E8EE;">
+    <div style="max-width:1200px;margin:0 auto;padding:0 32px;height:64px;display:flex;align-items:center;gap:28px;">
+      <a href="#top" style="display:flex;align-items:center;"><img src="assets/logo.svg" alt="Iterabase" style="height:26px;display:block;"></a>
+      <nav style="display:flex;gap:26px;margin-left:10px;">
+        <a href="#problem" style="font-size:14px;color:#455467;">The problem</a>
+        <a href="#different" style="font-size:14px;color:#455467;">Why we're different</a>
+        <a href="#approach" style="font-size:14px;color:#455467;">Method</a>
+        <a href="#capabilities" style="font-size:14px;color:#455467;">Capabilities</a>
+      </nav>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:14px;">
+        <a href="#approach" style="font-size:14px;color:#455467;">See how we work</a>
+        <a href="https://cal.com/nunocgoncalves/30min" style="display:inline-flex;align-items:center;gap:7px;background:#1666E0;color:#fff;font-family:'IBM Plex Sans',sans-serif;font-size:14px;font-weight:600;letter-spacing:-0.01em;height:34px;padding:0 16px;border-radius:6px;white-space:nowrap;" style-hover="background:#0F4FB0;">Book a call <i data-lucide="arrow-right" style="width:15px;height:15px;"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section id="top" data-theme="dark" style="position:relative;background:#080B11;color:#DCE2E9;border-bottom:1px solid #161E2B;background-image:linear-gradient(to right,rgba(133,147,164,0.07) 1px,transparent 1px),linear-gradient(to bottom,rgba(133,147,164,0.07) 1px,transparent 1px);background-size:28px 28px;overflow:hidden;">
+    <div style="max-width:1200px;margin:0 auto;padding:96px 32px 104px;display:grid;grid-template-columns:1.02fr 0.98fr;gap:56px;align-items:center;">
+      <div>
+        <span style="display:inline-flex;align-items:center;gap:9px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.09em;text-transform:uppercase;color:#8593A4;"><i data-lucide="git-merge" style="width:15px;height:15px;color:#2FD0D6;"></i> Operational intelligence</span>
+        <h1 style="font-size:clamp(38px,4.6vw,58px);font-weight:600;letter-spacing:-0.02em;line-height:1.05;margin:22px 0 0;color:#F6F8FA;">Most operational bottlenecks don't need more people. They need better systems.</h1>
+        <p style="font-size:19px;line-height:1.55;color:#B0BBC8;margin:24px 0 32px;max-width:34em;">Iterabase helps operational teams identify and eliminate bottlenecks using AI, automation, and workflow systems designed around how their business actually operates.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <a href="https://cal.com/nunocgoncalves/30min" style="display:inline-flex;align-items:center;gap:9px;background:#1666E0;color:#fff;font-family:'IBM Plex Sans',sans-serif;font-size:16px;font-weight:600;letter-spacing:-0.01em;height:48px;padding:0 24px;border-radius:6px;white-space:nowrap;" style-hover="background:#2D82F7;">Book a Workflow Discovery Call <i data-lucide="arrow-right" style="width:18px;height:18px;"></i></a>
+          <a href="#approach" style="display:inline-flex;align-items:center;gap:9px;background:transparent;color:#DCE2E9;font-family:'IBM Plex Sans',sans-serif;font-size:16px;font-weight:600;letter-spacing:-0.01em;height:48px;padding:0 22px;border-radius:6px;border:1px solid #232F3E;white-space:nowrap;" style-hover="background:#111723;border-color:#313F51;">See how we work</a>
+        </div>
+        <div style="display:flex;gap:18px;margin-top:30px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5E6E82;letter-spacing:0.04em;flex-wrap:wrap;">
+          <span>NO RIP-AND-REPLACE</span><span style="color:#232F3E;">·</span><span>MEASURED IN THROUGHPUT, NOT HOURS</span>
+        </div>
+      </div>
+
+      <!-- flow + constraint diagram -->
+      <div style="background:#0C1017;border:1px solid #232F3E;border-radius:14px;padding:20px 22px 18px;box-shadow:0 28px 60px -16px rgba(0,0,0,0.55);">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;border-bottom:1px solid #161E2B;">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.09em;text-transform:uppercase;color:#5E6E82;">Order-to-delivery · flow</span>
+          <span style="display:inline-flex;align-items:center;gap:7px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#E0533D;"><span style="width:8px;height:8px;border-radius:999px;background:#E0533D;display:inline-block;{{ constraintDotPulse }}"></span>Constraint detected</span>
+        </div>
+        <div style="padding:14px 0 4px;">
+          <svg viewBox="0 0 484 240" width="100%" style="display:block;overflow:visible;">
+            <text x="20" y="58" font-family="'IBM Plex Mono',monospace" font-size="9" letter-spacing="1.2" fill="#5E6E82">INPUTS</text>
+            <text x="356" y="106" font-family="'IBM Plex Mono',monospace" font-size="9" letter-spacing="1.2" fill="#5BA0FF">THROUGHPUT</text>
+            <g stroke="#313F51" stroke-width="1.25" fill="none">
+              <path d="M28 92 L96 140"></path><path d="M28 124 L96 140"></path><path d="M28 156 L96 140"></path><path d="M28 188 L96 140"></path>
+            </g>
+            <g fill="#5E6E82"><circle cx="28" cy="92" r="3.2"></circle><circle cx="28" cy="124" r="3.2"></circle><circle cx="28" cy="156" r="3.2"></circle><circle cx="28" cy="188" r="3.2"></circle></g>
+            <circle cx="96" cy="140" r="5" fill="#313F51"></circle>
+            <path d="M96 108 L232 108 L256 128 L452 128 L452 152 L256 152 L232 172 L96 172 Z" fill="#161E2B" stroke="#2A384A" stroke-width="1.25"></path>
+            <g fill="#D9952A"><circle cx="200" cy="120" r="3"></circle><circle cx="212" cy="132" r="3"></circle><circle cx="202" cy="148" r="3"></circle><circle cx="218" cy="158" r="3"></circle><circle cx="224" cy="124" r="3"></circle><circle cx="222" cy="148" r="3"></circle><circle cx="210" cy="118" r="3"></circle></g>
+            <circle cx="124" cy="140" r="6" fill="#0C1017" stroke="#2FA968" stroke-width="2"></circle>
+            <circle cx="178" cy="140" r="6" fill="#0C1017" stroke="#2FA968" stroke-width="2"></circle>
+            <circle cx="244" cy="140" r="15" fill="none" stroke="#E0533D" stroke-width="1.25" style="{{ constraintPulse }}"></circle>
+            <rect x="236" y="132" width="16" height="16" rx="2" transform="rotate(45 244 140)" fill="#E0533D"></rect>
+            <circle cx="350" cy="140" r="5" fill="#0C1017" stroke="#2D82F7" stroke-width="2"></circle>
+            <circle cx="446" cy="140" r="7" fill="#2D82F7"></circle>
+            <path d="M460 140 L476 140" stroke="#2D82F7" stroke-width="1.5"></path>
+            <path d="M471 135 L478 140 L471 145" fill="none" stroke="#2D82F7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <g fill="#5BA0FF"><circle cx="300" cy="140" r="2.4"></circle><circle cx="400" cy="140" r="2.4"></circle></g>
+            <g font-family="'IBM Plex Mono',monospace" font-size="9" letter-spacing="0.7" fill="#5E6E82" text-anchor="middle">
+              <text x="124" y="198">INTAKE</text><text x="178" y="198">TRIAGE</text><text x="244" y="198" fill="#E0533D">CONSTRAINT</text><text x="350" y="198">DISPATCH</text><text x="446" y="198">CLEARED</text>
+            </g>
+            <text x="244" y="213" font-family="'IBM Plex Mono',monospace" font-size="8" letter-spacing="0.4" fill="#8593A4" text-anchor="middle">exception review</text>
+          </svg>
+        </div>
+        <div style="margin-top:8px;padding:14px;border:1px solid #232F3E;border-radius:10px;background:#111723;">
+          <div style="color:#B0BBC8;font-size:13.5px;line-height:1.55;">One constraint sets the throughput of the entire operation. The work upstream just piles up in front of it.</div>
+          <div style="color:#5BA0FF;font-size:13px;margin-top:8px;font-family:'IBM Plex Mono',monospace;letter-spacing:0.02em;">→ Clear the constraint — don't build a chatbot.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROBLEM ===== -->
+  <section id="problem" style="padding:92px 0;background:#FFFFFF;border-bottom:1px solid #E3E8EE;">
+    <div style="max-width:1200px;margin:0 auto;padding:0 32px;">
+      <div style="max-width:680px;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.09em;text-transform:uppercase;color:#1666E0;">The problem</span>
+        <h2 style="font-size:clamp(30px,3.4vw,40px);font-weight:600;letter-spacing:-0.01em;line-height:1.1;margin:16px 0 0;color:#0C1017;">Your team doesn't need another chatbot.</h2>
+        <p style="font-size:17px;color:#455467;line-height:1.55;margin:16px 0 0;">The cost isn't a missing AI feature. It's where the work actually stalls — in inboxes, handoffs, and decisions only a few people know how to make.</p>
+      </div>
+      <div style="margin-top:44px;border:1px solid #E3E8EE;border-radius:12px;overflow:hidden;background:#FFFFFF;">
+        <sc-for list="{{ pains }}" as="p" hint-placeholder-count="5">
+          <div style="display:grid;grid-template-columns:64px 36px 1fr;align-items:center;gap:18px;padding:22px 26px;border-bottom:1px solid #EDF1F5;" style-hover="background:#F6F8FA;">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8593A4;letter-spacing:0.06em;">{{ p.n }}</span>
+            <span style="width:36px;height:36px;border-radius:8px;border:1px solid #E3E8EE;display:flex;align-items:center;justify-content:center;color:#455467;background:#F6F8FA;"><i data-lucide="{{ p.icon }}" style="width:18px;height:18px;"></i></span>
+            <span style="font-size:18px;color:#161E2B;font-weight:500;letter-spacing:-0.005em;">{{ p.t }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIFFERENTIATION ===== -->
+  <section id="different" style="padding:92px 0;background:#0C1017;color:#DCE2E9;background-image:linear-gradient(to right,rgba(133,147,164,0.06) 1px,transparent 1px),linear-gradient(to bottom,rgba(133,147,164,0.06) 1px,transparent 1px);background-size:28px 28px;border-bottom:1px solid #161E2B;">
+    <div style="max-width:1200px;margin:0 auto;padding:0 32px;">
+      <div style="max-width:720px;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.09em;text-transform:uppercase;color:#5BA0FF;">Why we're different</span>
+        <h2 style="font-size:clamp(30px,3.4vw,40px);font-weight:600;letter-spacing:-0.01em;line-height:1.1;margin:16px 0 0;color:#F6F8FA;">We're not a consultancy. We build the system.</h2>
+        <p style="font-size:17px;color:#B0BBC8;line-height:1.55;margin:16px 0 0;">Consultancies analyze. Agencies bill hours. Vendors sell models. Iterabase finds the constraint in how your operation runs and ships the system that clears it — then stays measured against the number.</p>
+      </div>
+      <div style="margin-top:44px;border:1px solid #232F3E;border-radius:12px;overflow:hidden;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;">
+          <div style="padding:13px 24px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.09em;text-transform:uppercase;color:#5E6E82;background:#080B11;border-bottom:1px solid #232F3E;">The typical engagement</div>
+          <div style="padding:13px 24px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.09em;text-transform:uppercase;color:#5BA0FF;background:#111723;border-bottom:1px solid #232F3E;border-left:1px solid #232F3E;">Iterabase</div>
+        </div>
+        <sc-for list="{{ contrasts }}" as="c" hint-placeholder-count="5">
+          <div style="display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid #161E2B;">
+            <div style="display:flex;align-items:flex-start;gap:12px;padding:20px 24px;background:#080B11;">
+              <i data-lucide="x" style="width:17px;height:17px;color:#5E6E82;flex:none;margin-top:1px;"></i>
+              <span style="font-size:15.5px;color:#8593A4;line-height:1.45;">{{ c.them }}</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:12px;padding:20px 24px;background:#111723;border-left:1px solid #232F3E;">
+              <i data-lucide="check" style="width:17px;height:17px;color:#2D82F7;flex:none;margin-top:1px;"></i>
+              <span style="font-size:15.5px;color:#DCE2E9;line-height:1.45;font-weight:500;">{{ c.us }}</span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== METHOD / APPROACH ===== -->
+  <section id="approach" style="padding:92px 0;background:#F6F8FA;border-bottom:1px solid #E3E8EE;background-image:linear-gradient(to right,rgba(14,26,43,0.04) 1px,transparent 1px),linear-gradient(to bottom,rgba(14,26,43,0.04) 1px,transparent 1px);background-size:28px 28px;">
+    <div style="max-width:1200px;margin:0 auto;padding:0 32px;">
+      <div style="max-width:720px;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.09em;text-transform:uppercase;color:#1666E0;">The method</span>
+        <h2 style="font-size:clamp(30px,3.4vw,40px);font-weight:600;letter-spacing:-0.01em;line-height:1.1;margin:16px 0 0;color:#0C1017;">We start with bottlenecks, not technology.</h2>
+        <p style="font-size:17px;color:#455467;line-height:1.55;margin:16px 0 0;">Every operation has one binding constraint. Improve anything else and it runs exactly as slow as before. We find that constraint, measure what it costs, and build the smallest system that clears it — measured against throughput.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:48px;">
+        <sc-for list="{{ steps }}" as="st" hint-placeholder-count="5">
+          <div style="background:#FFFFFF;border:1px solid #E3E8EE;border-radius:10px;padding:22px 20px;display:flex;flex-direction:column;box-shadow:0 1px 2px rgba(8,11,17,0.04);">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <span style="width:38px;height:38px;border-radius:8px;border:1px solid #E3E8EE;display:flex;align-items:center;justify-content:center;color:#1666E0;background:#F6F8FA;"><i data-lucide="{{ st.icon }}" style="width:20px;height:20px;"></i></span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8593A4;letter-spacing:0.06em;">{{ st.n }}</span>
+            </div>
+            <h3 style="font-size:16px;font-weight:600;margin:18px 0 8px;color:#0C1017;letter-spacing:-0.005em;">{{ st.h }}</h3>
+            <p style="font-size:13.5px;color:#455467;line-height:1.5;margin:0;">{{ st.p }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CURRENT FOCUS ===== -->
+  <section id="focus" style="padding:92px 0;background:#FFFFFF;border-bottom:1px solid #E3E8EE;">
+    <div style="max-width:1200px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:0.9fr 1.1fr;gap:56px;align-items:start;">
+      <div>
+        <span style="display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.09em;text-transform:uppercase;color:#0A8E96;"><span style="width:7px;height:7px;border-radius:999px;background:#0FB5BD;display:inline-block;{{ pulseDot }}"></span> Current research focus</span>
+        <h2 style="font-size:clamp(28px,3.2vw,38px);font-weight:600;letter-spacing:-0.01em;line-height:1.12;margin:16px 0 0;color:#0C1017;">Where logistics operators lose time, money, and capacity.</h2>
+        <p style="font-size:17px;color:#455467;line-height:1.6;margin:18px 0 0;">We're currently working with logistics and freight operators to understand where operational teams lose time, money, and capacity. This work is exploratory and evolving — the map below reflects where we're looking now.</p>
+        <div style="margin-top:24px;display:inline-flex;align-items:center;gap:9px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#8593A4;border:1px solid #E3E8EE;border-radius:999px;padding:7px 14px;background:#F6F8FA;"><i data-lucide="radar" style="width:14px;height:14px;color:#0A8E96;"></i> In active investigation</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <sc-for list="{{ focus }}" as="f" hint-placeholder-count="4">
+          <div style="border:1px solid #E3E8EE;border-radius:10px;padding:22px;background:#F6F8FA;border-left:2px solid #0FB5BD;" style-hover="background:#FFFFFF;border-color:#C7CFD9;">
+            <span style="width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#0A8E96;background:#D6F6F7;"><i data-lucide="{{ f.icon }}" style="width:18px;height:18px;"></i></span>
+            <h3 style="font-size:16px;font-weight:600;margin:16px 0 6px;color:#0C1017;">{{ f.t }}</h3>
+            <p style="font-size:13.5px;color:#455467;line-height:1.5;margin:0;">{{ f.p }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CAPABILITIES ===== -->
+  <section id="capabilities" style="padding:92px 0;background:#F6F8FA;border-bottom:1px solid #E3E8EE;">
+    <div style="max-width:1200px;margin:0 auto;padding:0 32px;">
+      <div style="max-width:680px;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.09em;text-transform:uppercase;color:#1666E0;">Capabilities</span>
+        <h2 style="font-size:clamp(30px,3.4vw,40px);font-weight:600;letter-spacing:-0.01em;line-height:1.1;margin:16px 0 0;color:#0C1017;">Built for complex operations.</h2>
+        <p style="font-size:17px;color:#455467;line-height:1.55;margin:16px 0 0;">These support the outcome — clearing the constraint. They are the mechanism, never the headline.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:44px;">
+        <sc-for list="{{ caps }}" as="c" hint-placeholder-count="6">
+          <div style="background:#FFFFFF;border:1px solid #E3E8EE;border-radius:10px;padding:24px;box-shadow:0 1px 2px rgba(8,11,17,0.04);" style-hover="border-color:#C7CFD9;">
+            <span style="width:40px;height:40px;border-radius:8px;border:1px solid #E3E8EE;display:flex;align-items:center;justify-content:center;color:#2C4258;background:#F6F8FA;"><i data-lucide="{{ c.icon }}" style="width:22px;height:22px;"></i></span>
+            <h3 style="font-size:17px;font-weight:600;margin:18px 0 7px;color:#0C1017;letter-spacing:-0.005em;">{{ c.t }}</h3>
+            <p style="font-size:14px;color:#455467;line-height:1.55;margin:0;">{{ c.p }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section id="book" data-theme="dark" style="position:relative;background:#080B11;color:#DCE2E9;background-image:linear-gradient(to right,rgba(133,147,164,0.07) 1px,transparent 1px),linear-gradient(to bottom,rgba(133,147,164,0.07) 1px,transparent 1px);background-size:28px 28px;">
+    <div style="max-width:1200px;margin:0 auto;padding:100px 32px;text-align:center;">
+      <img src="assets/logomark-dark.svg" alt="" style="width:44px;height:44px;margin:0 auto 24px;display:block;opacity:0.9;">
+      <h2 style="font-size:clamp(34px,4vw,52px);font-weight:600;letter-spacing:-0.02em;line-height:1.06;margin:0;color:#F6F8FA;">Let's find the bottleneck.</h2>
+      <p style="font-size:18px;color:#B0BBC8;line-height:1.6;margin:20px auto 34px;max-width:38em;">If a workflow consumes disproportionate time, creates operational risk, or limits growth, it's probably worth investigating.</p>
+      <div style="display:flex;justify-content:center;">
+        <a href="https://cal.com/nunocgoncalves/30min" style="display:inline-flex;align-items:center;gap:10px;background:#1666E0;color:#fff;font-family:'IBM Plex Sans',sans-serif;font-size:17px;font-weight:600;letter-spacing:-0.01em;height:50px;padding:0 28px;border-radius:6px;white-space:nowrap;" style-hover="background:#2D82F7;">Book a Workflow Discovery Call <i data-lucide="arrow-right" style="width:19px;height:19px;"></i></a>
+      </div>
+      <div style="margin-top:22px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5E6E82;letter-spacing:0.05em;">ONE CONSTRAINT MAPPED LIVE · NO COMMITMENT</div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer style="background:#F6F8FA;border-top:1px solid #E3E8EE;padding:48px 0 36px;">
+    <div style="max-width:1200px;margin:0 auto;padding:0 32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <img src="assets/logo.svg" alt="Iterabase" style="height:24px;display:block;">
+      </div>
+      <p style="font-size:13.5px;color:#455467;margin:0;max-width:30em;">Operational intelligence for teams that run complex operations. We find the constraint and remove it.</p>
+      <div style="display:flex;align-items:center;gap:18px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8593A4;letter-spacing:0.05em;">
+        <span>© 2026 ITERABASE</span><span>BUILT FOR OPERATIONS</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;enableMotion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const motion = this.props.enableMotion !== false;
+    const pulseDot = motion ? 'animation:ib-pulse 2.4s ease-in-out infinite;' : '';
+    const constraintPulse = motion ? 'animation:ib-glow 2.2s ease-in-out infinite;' : '';
+    const constraintDotPulse = motion ? 'animation:ib-pulse 2.4s ease-in-out infinite;' : '';
+    const pains = [
+      { n: '01', icon: 'mail', t: 'Critical information lives in email' },
+      { n: '02', icon: 'users', t: 'Workflows depend on tribal knowledge' },
+      { n: '03', icon: 'timer', t: 'Teams spend hours coordinating manually' },
+      { n: '04', icon: 'unplug', t: 'Processes break when key people are unavailable' },
+      { n: '05', icon: 'user-plus', t: 'Scaling requires hiring more operators' },
+    ];
+    const contrasts = [
+      { them: 'Hands you a deck of recommendations.', us: 'Hands you a running system, in production.' },
+      { them: 'Bills by the hour or the seat.', us: 'Measured against throughput, not time spent.' },
+      { them: 'Sells you a model or a platform.', us: 'Removes the constraint — with whatever it takes.' },
+      { them: 'A chatbot that answers questions.', us: 'A system that makes the decision and moves the work.' },
+      { them: 'Optimizes wherever it looks impressive.', us: 'Optimizes the one constraint that sets the pace.' },
+    ];
+    const steps = [
+      { n: '01', icon: 'radar', h: 'Understand the workflow', p: 'Map every queue, handoff, and manual decision in the operation as it actually runs.' },
+      { n: '02', icon: 'gauge', h: 'Measure the cost', p: 'Quantify what the constraint costs in time, capacity, and revenue. Rank by impact.' },
+      { n: '03', icon: 'workflow', h: 'Design the system', p: 'Specify the smallest system that clears the constraint, scoped to your stack.' },
+      { n: '04', icon: 'git-branch', h: 'Automate decisions', p: 'Move repeatable judgment to policy and AI where it moves the number.' },
+      { n: '05', icon: 'repeat', h: 'Continuously improve', p: 'Measure against the baseline and tune as the constraint shifts.' },
+    ];
+    const focus = [
+      { icon: 'triangle-alert', t: 'Shipment exceptions', p: 'Where delays, holds, and discrepancies stall a load.' },
+      { icon: 'send', t: 'Customer communications', p: 'Status, quotes, and updates that eat operator hours.' },
+      { icon: 'file-text', t: 'Documentation workflows', p: 'BOLs, customs, PODs — the paperwork that gates movement.' },
+      { icon: 'waypoints', t: 'Operational coordination', p: 'Handoffs between dispatch, ops, and the customer.' },
+    ];
+    const caps = [
+      { icon: 'workflow', t: 'AI workflow automation', p: 'Route, draft, and decide across steps that used to need a person.' },
+      { icon: 'server', t: 'Private AI deployments', p: 'Models that run in your environment, on your data, under your control.' },
+      { icon: 'share-2', t: 'System integrations', p: 'Connect the tools the work already lives in. No rip-and-replace.' },
+      { icon: 'git-merge', t: 'Agentic workflows', p: 'Multi-step agents that execute end-to-end, with humans on the exceptions.' },
+      { icon: 'database', t: 'Knowledge systems', p: 'Turn tribal knowledge into systems the whole team can query.' },
+      { icon: 'activity', t: 'Operational intelligence', p: 'See where work stalls, in real time, measured against throughput.' },
+    ];
+    return {
+      pulseDot, constraintPulse, constraintDotPulse, pains, contrasts, steps, focus, caps,
+    };
+  }
+
+  mountIcons() {
+    if (window.lucide) {
+      try { window.lucide.createIcons({ attrs: { 'stroke-width': 1.75 } }); } catch (e) {}
+    }
+  }
+
+  componentDidMount() {
+    this.mountIcons();
+    [120, 400, 900].forEach((t) => setTimeout(() => this.mountIcons(), t));
+  }
+
+  componentDidUpdate() {
+    this.mountIcons();
+  }
+}
+</script>
+</body>
+</html>

@@ -2626,7 +2626,7 @@ class Component extends DCLogic {
       requestAnimationFrame(tick); };
     const reveal=(t,getEl,cap,sub,step,prog,key,o)=>{ o=o||{};
       at(t,()=>{ this.stopTrack(); this.setDemo({spot:null,showCursor:false});
-        const side=this.pinSide(key,'bottom'); scrollToEl(getEl(),o.off,side);
+        const side=this.pinSide(key,o.side||'bottom'); scrollToEl(getEl(),o.off,side);
         settled(getEl,()=>{ beat(getEl(),cap,sub,step,prog,key,o);
           // chained follow-ups fire relative to when the beat ACTUALLY lands, not on the
           // absolute clock — on mobile the stacked board scrolls much further, so a
@@ -2653,9 +2653,9 @@ class Component extends DCLogic {
         if(send){ const c=this.cursorEl(send,null,19); this.setDemo({showCursor:true,...c}); } }); });
     at(8500,()=>this.clickPulse());
     at(8750,()=>{ this.chatSend(); say(D.b0a,D.b0as,'01','11%','chatsend'); });
-    at(10240,()=>{ const b=this.qText('button',/^\s*(Start run|Iniciar execu\u00e7\u00e3o)\s*$/);
-      beat(b?b.closest('div[style*="border-radius"]')||b:null,D.b0a,D.b0as,'01','13%','chatconfirm',{pad:10}); });
-    at(11392,()=>{ const b=this.qText('button',/^\s*(Start run|Iniciar execu\u00e7\u00e3o)\s*$/); if(b){ beat(b,D.b0a,D.b0as,'01','14%','chatconfirmbtn',{pad:6,cursor:true,oy:18}); } });
+    reveal(10240,()=>{ const b=this.qText('button',/^\s*(Start run|Iniciar execu\u00e7\u00e3o)\s*$/);
+      return (this.state.vw&&this.state.vw<760)?b:(b?b.closest('div[style*="border-radius"]')||b:null); },D.b0a,D.b0as,'01','13%','chatconfirm',{pad:10,side:'top'});
+    at(11392,()=>{ const b=this.qText('button',/^\s*(Start run|Iniciar execu\u00e7\u00e3o)\s*$/); if(b){ this.pinSide('chatconfirmbtn','top'); beat(b,D.b0a,D.b0as,'01','14%','chatconfirmbtn',{pad:6,cursor:true,oy:18}); } });
     at(11776,()=>this.clickPulse());
     at(11968,()=>{ this.stopTrack(); this.setDemo({spot:null,showCursor:false}); const pc=this.pendingConfirm(); if(pc) this.confirmRun(pc.tid, pc.m.id, pc.m.confirm); });
     at(12700,()=>{ const cc=this.q('[data-demo="confirm"]'); beat(cc,D.b0a,D.b0as,'01','16%','chatstarted',{pad:10,spot:cc?undefined:false}); });
@@ -2692,14 +2692,13 @@ class Component extends DCLogic {
     // ── 04 · work that stopped on purpose ──────────────
     at(33480,()=>{ this.setState({toast:null}); scrollToEl(this.q('[data-demo="stopped"]'),110); });
     at(33580,()=>beat(this.q('[data-demo="stopped"]'),D.bStop,D.bStops,'05','54%','stopped',{pad:8}));
-    at(35180,()=>{ this.setState({failOpen:true}); });
-    at(35680,()=>{ scrollToEl(this.q('[data-demo="stopped"]'),110); beat(this.q('[data-demo="stopped"]'),D.bStopO,D.bStopOs,'05','57%','stopopen',{pad:8}); });
-    at(37380,()=>{ const lbl=this.qText('div',/Who was told|Quem foi avisado/); beat(lbl?lbl.parentElement.parentElement:null,D.bStopO,D.bStopOs,'05','59%','stopwho',{pad:10}); });
-    at(39180,()=>{ const ta=this.q('[data-demo="stopped"] textarea'); beat(ta,D.bStopG,D.bStopGs,'05','62%','stopguide',{pad:8,cursor:true,ox:44,oy:22});
-      this.typeInto(ta, pt?'O portal volta \u00e0s 18:00 \u2014 tenta depois disso.':'The portal is back after 18:00 — try again after that.'); });
-    at(41580,()=>{ const b=btnIn(this.q('[data-demo="stopped"]'),/Start new attempt|Iniciar nova tentativa/); beat(b,D.bStopG,D.bStopGs,'05','64%','stopretry',{pad:6,cursor:true,oy:19}); });
-    at(42180,()=>this.clickPulse());
-    at(42430,()=>{ this.restartFailed('f1'); say(D.bStopR,D.bStopRs,'05','66%','stopdone',true); });
+    at(35180,()=>{ this.stopTrack(); this.setDemo({spot:null,showCursor:false}); this.setState({failOpen:true}); });
+    reveal(35680,()=>{ const lbl=this.qText('div',/^(Where things stand|Situação atual)$/); return (this.state.vw&&this.state.vw<760)?(lbl?lbl.parentElement:null):this.q('[data-demo="stopped"]'); },D.bStopO,D.bStopOs,'05','57%','stopopen',{pad:10,side:'top'});
+    reveal(37380,()=>{ const lbl=this.qText('div',/^(Who was told|Quem foi avisado)$/); return lbl?lbl.parentElement:null; },D.bStopO,D.bStopOs,'05','59%','stopwho',{pad:10,side:'top'});
+    reveal(39180,()=>this.q('[data-demo="stopped"] textarea'),D.bStopG,D.bStopGs,'05','62%','stopguide',{pad:8,cursor:true,ox:44,oy:22,side:'top',
+      after:[[0,()=>{ const ta=this.q('[data-demo="stopped"] textarea'); this.typeInto(ta, pt?'O portal volta \u00e0s 18:00 \u2014 tenta depois disso.':'The portal is back after 18:00 — try again after that.'); }]]});
+    reveal(41580,()=>btnIn(this.q('[data-demo="stopped"]'),/Start new attempt|Iniciar nova tentativa/),D.bStopG,D.bStopGs,'05','64%','stopretry',{pad:6,cursor:true,oy:19,side:'top',
+      after:[[600,()=>this.clickPulse()],[850,()=>{ this.restartFailed('f1'); say(D.bStopR,D.bStopRs,'05','66%','stopdone',true); }]]});
     at(44180,()=>this.setDemo({fullScrim:false,spot:null}));
 
     // ── 05 · a finished run leaves a result ────────────
@@ -2721,7 +2720,7 @@ class Component extends DCLogic {
     at(59380,()=>{ this.setState({route:'workflows', openItemId:null}); this.smoothTop(); say(D.b1c,D.b1s,'08','90%','wfsroute',true); });
     at(60080,()=>beat(this.q('.demo-hero'),D.b1c,D.b1s,'08','91%','hero',{pad:12}));
     at(62580,()=>beat(this.q('[data-demo="trend"]'),D.bTrend,D.bTrends,'08','93%','trend',{pad:12}));
-    reveal(64980,()=>this.q('[data-demo="catalogue"]'),D.b5all,D.b5alls,'08','95%','catalogue',{pad:8,off:150});
+    reveal(64980,()=>{ const catalogue=this.q('[data-demo="catalogue"]'); return (this.state.vw&&this.state.vw<760&&catalogue)?catalogue.firstElementChild:catalogue; },D.b5all,D.b5alls,'08','95%','catalogue',{pad:8,off:150});
 
     // ── payoff ─────────────────────────────────────────
     at(68780,()=>{ this.setState({toast:null}); this.setDemo({ended:true,fullScrim:true,showCursor:false,spot:null,caption:'',progress:'100%'}); });
@@ -2745,8 +2744,7 @@ class Component extends DCLogic {
   scrollChatBottom(){
     if(typeof window==='undefined') return;
     requestAnimationFrame(()=>setTimeout(()=>{
-      const c=[...document.querySelectorAll('div')].find(d=>{ const st=getComputedStyle(d);
-        return st.overflowY==='auto' && d.scrollHeight>d.clientHeight+4 && d.clientWidth>560; });
+      const c=this.scrollHost();
       try{ if(c) c.scrollTo({top:c.scrollHeight, behavior:'smooth'});
         else window.scrollTo({top:document.documentElement.scrollHeight, behavior:'smooth'}); }catch(e){}
     },40));

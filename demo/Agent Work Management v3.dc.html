@@ -2496,11 +2496,13 @@ class Component extends DCLogic {
   // bottom. Only beats that spotlight wherever the element already sits need to flip.
   pinSide(key,side){ this._sideFor={key:key,side:side}; if(this._capKey===key) this._capSide=side; return side; }
   // narration side is decided ONCE per beat (latched) so rAF spot tracking can't thrash it
+  viewportBox(){ const vv=typeof window!=='undefined'&&window.visualViewport; return {
+      top:vv?vv.offsetTop:0, height:vv?vv.height:(typeof window!=='undefined'?window.innerHeight:900) }; }
   capSide(spot){ if(this._capSide) return this._capSide;
     if(!spot) return 'bottom';
-    const vh=(typeof window!=='undefined'?window.innerHeight:900);
+    const view=this.viewportBox();
     const mid=(parseFloat(spot.y)||0)+(parseFloat(spot.h)||0)/2;
-    this._capSide = mid > vh*0.5 ? 'top' : 'bottom';
+    this._capSide = mid > view.top+view.height*0.5 ? 'top' : 'bottom';
     return this._capSide; }
   headerH(){ const el=this._islandRef&&this._islandRef.current;
     return el?Math.round(el.getBoundingClientRect().height):60; }
@@ -2558,8 +2560,9 @@ class Component extends DCLogic {
     if(this._spotRaf) return;
     const tick=()=>{ this._spotRaf=null; const e=this._spotEl;
       if(!this.state.demo||!e) return;
-      if(e.offsetParent){ const box=this.spotEl(e,this._spotPad); const k=box?box.x+'|'+box.y+'|'+box.w+'|'+box.h:'';
-        if(k!==this._spotKey){ this._spotKey=k; const c=this._spotCur?this.cursorEl(e,this._spotCur.ox,this._spotCur.oy):{}; this.setDemo({spot:box,...c}); } }
+      if(!e.offsetParent){ this.stopTrack(); this.setDemo({spot:null,showCursor:false}); return; }
+      const box=this.spotEl(e,this._spotPad); const k=box?box.x+'|'+box.y+'|'+box.w+'|'+box.h:'';
+      if(k!==this._spotKey){ this._spotKey=k; const c=this._spotCur?this.cursorEl(e,this._spotCur.ox,this._spotCur.oy):{}; this.setDemo({spot:box,...c}); }
       this._spotRaf=requestAnimationFrame(tick); };
     this._spotRaf=requestAnimationFrame(tick); }
   stopTrack(){ if(this._spotRaf){ cancelAnimationFrame(this._spotRaf); this._spotRaf=null; } this._spotEl=null; this._spotKey=null; }
@@ -2593,9 +2596,9 @@ class Component extends DCLogic {
     const scrollToEl=(el,off,side)=>{ if(!el) return; const c=mainScroll();
       // on phones the narration bar owns an edge — centre the target in the band that's left over
       let pad=off==null?130:off;
-      if(this.state.vw && this.state.vw<760){ const vh=window.innerHeight, bar=DEMO_BAR_H+12;
-        const topRes=this.headerH()+8+(side==='top'?bar:0), botRes=(side==='top'?12:bar);
-        const free=vh-topRes-botRes, h=el.getBoundingClientRect().height;
+      if(this.state.vw && this.state.vw<760){ const view=this.viewportBox(), bar=DEMO_BAR_H+12;
+        const topRes=view.top+this.headerH()+8+(side==='top'?bar:0), botRes=(side==='top'?12:bar);
+        const free=view.height-(topRes-view.top)-botRes, h=el.getBoundingClientRect().height;
         pad=Math.round(topRes+Math.max(8,(free-Math.min(h,free))/2)); }
       if(c){ const b=el.getBoundingClientRect(), cb=c.getBoundingClientRect(); c.scrollTo({top:Math.max(0,c.scrollTop+b.top-cb.top-pad),behavior:'smooth'}); return; }
       try{ window.scrollTo({top:Math.max(0,window.scrollY+el.getBoundingClientRect().top-pad),behavior:'smooth'}); }catch(e){} };
@@ -2611,9 +2614,9 @@ class Component extends DCLogic {
       if(o.spot!==false && el) this.trackSpot(el,o.pad,o.cursor?{ox:o.ox,oy:o.oy}:null); else this.stopTrack(); };
     const say=(cap,sub,step,prog,key,scrim)=>this.setDemo({caption:cap,sub:sub||'',step:step,progress:prog,beatKey:key,spot:null,fullScrim:!!scrim,showCursor:false});
     // scroll a target into view, then spotlight it once the scroll has settled
-    const inBand=el=>{ if(!el) return true; const b=el.getBoundingClientRect(), vh=window.innerHeight;
+    const inBand=el=>{ if(!el) return true; const b=el.getBoundingClientRect(), view=this.viewportBox();
       const bar=(this.state.vw&&this.state.vw<760)?DEMO_BAR_H+12:0;
-      return b.top < vh-bar-8 && b.bottom > this.headerH(); };
+      return b.top < view.top+view.height-bar-8 && b.bottom > view.top+this.headerH(); };
     const settled=(getEl,fn)=>{ const c=mainScroll(); let last=c?c.scrollTop:(window.scrollY||0), still=0, frames=0;
       const tick=()=>{ if(!this.state.demo) return; const now=c?c.scrollTop:(window.scrollY||0);
         still = Math.abs(now-last)<0.5 ? still+1 : 0; last=now; frames++;
@@ -2640,14 +2643,14 @@ class Component extends DCLogic {
     at(4416,()=>this.setState({attachMenu:true, attachQuery:''}));
     at(5056,()=>{ const menu=this.q('[data-demo="composer"] div[style*="bottom:44px"]'); beat(menu,D.b0at,D.b0ats,'01','9%','attachmenu',{pad:8}); });
     at(6016,()=>{ const row=[...document.querySelectorAll('[data-demo="composer"] button')].find(b=>/RFQ_Nordkapp/.test(b.textContent));
-      if(row) beat(row,D.b0af,D.b0afs,'01','10%','attachpick',{pad:6,cursor:true,ox:60,oy:22}); });
+      if(row){ this.pinSide('attachpick','top'); beat(row,D.b0af,D.b0afs,'01','10%','attachpick',{pad:6,cursor:true,ox:60,oy:22}); } });
     at(6656,()=>this.clickPulse());
     at(6912,()=>{ const lb=ATTACH_LIB[0];
       this.addAttach({libId:lb.id, kind:lb.kind, name:lb.name, meta:lb.meta, url:lb.url, wf:lb.wf, ref:lb.ref, fields:lb.fields, raw:lb.raw, needsOcr:lb.needsOcr, text:lb.text});
-      this.setState({attachMenu:false}); });
-    at(7400,()=>{ const comp=this.q('[data-demo="composer"]'); const bs=[...document.querySelectorAll('[data-demo="composer"] button')]; const send=bs[bs.length-1];
-      beat(comp,D.b0af,D.b0afs,'01','11%','attachchip',{pad:8});
-      if(send){ const c=this.cursorEl(send,null,19); this.setDemo({showCursor:true,...c}); } });
+      this.stopTrack();
+      this.setState({attachMenu:false},()=>{ const comp=this.q('[data-demo="composer"]'); const bs=[...document.querySelectorAll('[data-demo="composer"] button')]; const send=bs[bs.length-1];
+        this.pinSide('attachchip','top'); beat(comp,D.b0af,D.b0afs,'01','11%','attachchip',{pad:8});
+        if(send){ const c=this.cursorEl(send,null,19); this.setDemo({showCursor:true,...c}); } }); });
     at(8500,()=>this.clickPulse());
     at(8750,()=>{ this.chatSend(); say(D.b0a,D.b0as,'01','11%','chatsend'); });
     at(10240,()=>{ const b=this.qText('button',/^\s*(Start run|Iniciar execu\u00e7\u00e3o)\s*$/);

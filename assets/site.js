@@ -2,7 +2,6 @@
   "use strict";
 
   const FORM_ENDPOINT = "https://formspree.io/f/xeajzaoe";
-  const CAL_LINK = "nunocgoncalves/30min";
   const ATTRIBUTION_KEYS = [
     "utm_source",
     "utm_medium",
@@ -21,10 +20,6 @@
     ATTRIBUTION_KEYS.filter((key) => search.has(key)).map((key) => [key, search.get(key)])
   );
 
-  let capturedEmail = readCapturedEmail();
-  let calEmbedReady = false;
-  let lastCalLocation = "unknown";
-  let bookingTracked = false;
   let submitting = false;
 
   function track(name, props = {}) {
@@ -33,106 +28,16 @@
     }
   }
 
-  function readCapturedEmail() {
-    try {
-      return window.sessionStorage.getItem("iterabase_demo_email") || "";
-    } catch (_error) {
-      return "";
-    }
-  }
-
   function saveCapturedEmail(email) {
-    capturedEmail = email;
+    if (window.IterabaseBooking) {
+      window.IterabaseBooking.setEmail(email);
+      return;
+    }
     try {
       window.sessionStorage.setItem("iterabase_demo_email", email);
     } catch (_error) {
       // Session storage is an optional convenience for Cal.com prefilling.
     }
-  }
-
-  function initCal() {
-    if (!window.Cal) {
-      (function (C, A, L) {
-        const push = function (api, args) {
-          api.q.push(args);
-        };
-        const document = C.document;
-        C.Cal = C.Cal || function () {
-          const cal = C.Cal;
-          const args = arguments;
-          if (!cal.loaded) {
-            cal.ns = {};
-            cal.q = cal.q || [];
-            const script = document.createElement("script");
-            script.src = A;
-            script.async = true;
-            script.addEventListener("load", () => {
-              calEmbedReady = true;
-            });
-            document.head.appendChild(script);
-            cal.loaded = true;
-          }
-          if (args[0] === L) {
-            const api = function () {
-              push(api, arguments);
-            };
-            const namespace = args[1];
-            api.q = api.q || [];
-            if (typeof namespace === "string") {
-              cal.ns[namespace] = cal.ns[namespace] || api;
-              push(cal.ns[namespace], args);
-              push(cal, ["initNamespace", namespace]);
-            } else {
-              push(cal, args);
-            }
-            return;
-          }
-          push(cal, args);
-        };
-      })(window, "https://app.cal.com/embed/embed.js", "init");
-    }
-
-    window.Cal("init", { origin: "https://app.cal.com" });
-    window.Cal("ui", {
-      theme: "dark",
-      hideEventTypeDetails: false,
-      cssVarsPerTheme: {
-        light: { "cal-brand": "#1666E0" },
-        dark: { "cal-brand": "#2D82F7" },
-      },
-    });
-    window.Cal("on", {
-      action: "bookingSuccessfulV2",
-      callback: () => {
-        if (bookingTracked) return;
-        bookingTracked = true;
-        track("Call Booked", { location: lastCalLocation });
-      },
-    });
-  }
-
-  function openCal(event) {
-    const link = event.currentTarget;
-    lastCalLocation = link.dataset.calLocation || "unknown";
-    bookingTracked = false;
-    track("Booking Started", { location: lastCalLocation });
-
-    // Preserve the supplied external URL as a working fallback if Cal's embed
-    // script is unavailable or the visitor clicks before it has loaded.
-    if (!calEmbedReady || typeof window.Cal !== "function") return;
-
-    event.preventDefault();
-    const config = {
-      theme: "dark",
-      layout: "month_view",
-      ...attribution,
-    };
-    if (capturedEmail) config.email = capturedEmail;
-
-    window.Cal("modal", {
-      calLink: CAL_LINK,
-      config,
-    });
   }
 
   function isValidEmail(value) {
@@ -217,17 +122,28 @@
   }
 
   function init() {
-    initCal();
+    if (window.IterabaseBooking) window.IterabaseBooking.init();
 
     document.querySelectorAll("[data-cal-link]").forEach((link) => {
-      link.addEventListener("click", openCal);
+      link.addEventListener("click", (event) => {
+        if (!window.IterabaseBooking) return;
+        window.IterabaseBooking.open({
+          event,
+          location: link.dataset.calLocation || "unknown",
+          bookingUrl: link.href,
+        });
+      });
     });
 
     const form = document.getElementById("demo-form");
     form.addEventListener("submit", submitLead);
     document.getElementById("demo-email").addEventListener("input", () => setGateError(false));
 
-    document.querySelector("[data-demo-link]").addEventListener("click", () => {
+    const demoLink = document.querySelector("[data-demo-link]");
+    const demoUrl = new URL(demoLink.href, window.location.href);
+    for (const [key, value] of Object.entries(attribution)) demoUrl.searchParams.set(key, value);
+    demoLink.href = demoUrl.href;
+    demoLink.addEventListener("click", () => {
       track("Demo Opened", { source: "platform_gate" });
     });
     document.querySelector("[data-email-contact]").addEventListener("click", () => {

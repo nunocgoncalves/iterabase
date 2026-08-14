@@ -81,6 +81,7 @@
     @keyframes cursorClick{0%{transform:scale(1)}45%{transform:scale(.72)}100%{transform:scale(1)}}
     @keyframes ringOut{0%{transform:scale(.5);opacity:.55}100%{transform:scale(1.9);opacity:0}}
     @keyframes captionIn{from{transform:translate(-50%,10px);opacity:0}to{transform:translate(-50%,0);opacity:1}}
+    @keyframes captionInBar{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
     @keyframes captionSwap{from{transform:translateY(3px);opacity:0}to{transform:none;opacity:1}}
     @keyframes endIn{from{transform:scale(.96);opacity:0}to{transform:none;opacity:1}}
     @keyframes viewIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
@@ -114,7 +115,7 @@
     </div>
   </sc-if>
 
-  <div style="position:fixed;top:0;left:0;right:0;z-index:{{ islandZ }};display:flex;justify-content:center;pointer-events:none;padding:{{ islandPad }}">
+  <div ref="{{ islandRef }}" style="position:fixed;top:0;left:0;right:0;z-index:{{ islandZ }};display:flex;justify-content:center;pointer-events:none;padding:{{ islandPad }}">
     <div style="pointer-events:auto;width:{{ islandW }};max-width:{{ islandMaxW }};background:var(--surface);border:1px solid var(--border-strong);border-radius:{{ islandR }};box-shadow:0 20px 48px -16px rgba(11,15,23,.38),0 2px 6px rgba(11,15,23,.07);overflow:hidden;transition:width .26s cubic-bezier(.22,1,.36,1),border-radius .22s ease">
 
       <div style="display:flex;align-items:center;gap:9px;height:52px;padding:0 9px 0 11px">
@@ -1548,22 +1549,36 @@
       </sc-if>
 
       <sc-if value="{{ demo.caption }}" hint-placeholder-val="{{ false }}">
-        <div style="position:fixed;left:50%;bottom:40px;transform:translateX(-50%);z-index:72;display:flex;flex-direction:column;align-items:center;gap:12px;animation:captionIn .4s cubic-bezier(.22,1,.36,1)">
-          <div style="display:flex;align-items:center;gap:14px;background:var(--gph-950);color:#fff;border:1px solid rgba(255,255,255,.10);border-radius:12px;padding:14px 20px;box-shadow:0 24px 60px -12px rgba(0,0,0,.6),0 4px 12px rgba(0,0,0,.4);max-width:80vw;transition:width .3s ease">
+        <div style="position:fixed;left:{{ demo.capL }};right:{{ demo.capR }};top:{{ demo.capT }};bottom:{{ demo.capB }};transform:{{ demo.capTx }};z-index:72;display:flex;flex-direction:column;align-items:{{ demo.capAlign }};gap:{{ demo.capGap }};padding:{{ demo.capPad }};animation:{{ demo.capAnim }};pointer-events:none">
+          <div style="position:relative;overflow:hidden;width:{{ demo.capCardW }};display:flex;align-items:center;gap:{{ demo.capCardGap }};background:var(--gph-950);color:#fff;border:1px solid rgba(255,255,255,.10);border-radius:{{ demo.capRad }};padding:{{ demo.capCardPad }};box-shadow:0 24px 60px -12px rgba(0,0,0,.6),0 4px 12px rgba(0,0,0,.4);min-height:{{ demo.capMinH }};max-width:{{ demo.capMaxW }};transition:width .3s ease">
+            <sc-if value="{{ demo.mobBar }}" hint-placeholder-val="{{ false }}">
+              <span style="position:absolute;left:0;top:0;height:2px;width:{{ demo.progress }};background:var(--teal-500);transition:width .5s linear"></span>
+            </sc-if>
             <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--teal-500);background:rgba(45,212,191,.14);border-radius:6px;padding:3px 8px;flex:none">{{ demo.step }}</span>
-            <div key="{{ demo.beatKey }}" style="display:flex;flex-direction:column;gap:2px;animation:captionSwap .34s cubic-bezier(.22,1,.36,1)">
-              <span style="font-size:15px;font-weight:600;letter-spacing:-.01em">{{ demo.caption }}</span>
-              <sc-if value="{{ demo.sub }}" hint-placeholder-val="{{ false }}"><span style="font-size:12.5px;color:rgba(255,255,255,.74)">{{ demo.sub }}</span></sc-if>
+            <div key="{{ demo.beatKey }}" style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;animation:captionSwap .34s cubic-bezier(.22,1,.36,1)">
+              <span style="font-size:{{ demo.capFs }};font-weight:600;letter-spacing:-.01em;line-height:1.35;text-wrap:pretty">{{ demo.caption }}</span>
+              <sc-if value="{{ demo.showSub }}" hint-placeholder-val="{{ false }}"><span style="font-size:12.5px;color:rgba(255,255,255,.74)">{{ demo.sub }}</span></sc-if>
             </div>
+            <sc-if value="{{ demo.mobBar }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ onSkipDemo }}" aria-label="{{ t.demoSkip }}" style="pointer-events:auto;flex:none;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:none;border:none;padding:0;color:rgba(255,255,255,.72);font-family:var(--font-sans);font-size:16px;line-height:1;cursor:pointer"><span style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:8px">×</span></button>
+            </sc-if>
           </div>
-          <div style="display:flex;align-items:center;gap:8px">
-            <div style="width:170px;height:3px;background:rgba(255,255,255,.18);border-radius:2px;overflow:hidden"><div style="height:100%;width:{{ demo.progress }};background:var(--teal-500);border-radius:2px;transition:width .5s linear"></div></div>
-            <button onClick="{{ onSkipDemo }}" style="pointer-events:auto;background:rgba(255,255,255,.08);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.16);border-radius:7px;font-family:var(--font-sans);font-size:12px;font-weight:500;padding:5px 12px;cursor:pointer">{{ t.demoSkip }}</button>
-          </div>
+          <sc-if value="{{ demo.wideControls }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="width:170px;height:3px;background:rgba(255,255,255,.18);border-radius:2px;overflow:hidden"><div style="height:100%;width:{{ demo.progress }};background:var(--teal-500);border-radius:2px;transition:width .5s linear"></div></div>
+              <button onClick="{{ onSkipDemo }}" style="pointer-events:auto;background:rgba(255,255,255,.08);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.16);border-radius:7px;font-family:var(--font-sans);font-size:12px;font-weight:500;padding:5px 12px;cursor:pointer">{{ t.demoSkip }}</button>
+            </div>
+          </sc-if>
         </div>
       </sc-if>
 
-      <sc-if value="{{ demo }}" hint-placeholder-val="{{ true }}">
+      <sc-if value="{{ demo.tap }}" hint-placeholder-val="{{ false }}">
+        <div style="position:fixed;left:0;top:0;z-index:74;transform:translate({{ demo.cx }},{{ demo.cy }});pointer-events:none">
+          <span style="position:absolute;left:-19px;top:-19px;width:38px;height:38px;border-radius:50%;border:2px solid var(--teal-400);background:rgba(45,212,191,.18);animation:ringOut .55s ease-out"></span>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ demo.showCursor }}" hint-placeholder-val="{{ false }}">
         <div style="position:fixed;left:0;top:0;z-index:74;transform:translate({{ demo.cx }},{{ demo.cy }});opacity:{{ demo.cursorOn }};transition:transform .7s cubic-bezier(.5,.05,.2,1),opacity .4s ease;pointer-events:none">
           <div style="position:relative;animation:{{ demo.clickAnim }}">
             <sc-if value="{{ demo.clicking }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:-2px;top:-2px;width:34px;height:34px;border-radius:50%;background:var(--accent);animation:ringOut .5s ease-out"></span></sc-if>
@@ -1576,11 +1591,14 @@
         <div style="position:fixed;inset:0;z-index:73;display:flex;align-items:center;justify-content:center;pointer-events:auto">
           <div style="width:440px;max-width:90vw;background:var(--surface);border-radius:16px;box-shadow:var(--shadow-xl);padding:34px 32px;text-align:center;animation:endIn .35s cubic-bezier(.22,1,.36,1)">
             <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--text-tertiary)">{{ t.demoEndLabel }}</div>
-            <div style="font-family:var(--font-mono);font-size:46px;font-weight:500;letter-spacing:-.02em;margin:12px 0 8px">{{ demoTotal }}</div>
-            <p style="margin:0 auto 26px;font-size:14px;color:var(--text-secondary);line-height:1.5;max-width:32ch">{{ t.demoEndSub }}</p>
-            <div style="display:flex;gap:10px;justify-content:center">
-              <button onClick="{{ onSkipDemo }}" class="ib-btn ib-btn--ghost ib-btn--md">{{ t.demoClose }}</button>
-              <button onClick="{{ onReplayDemo }}" class="ib-btn ib-btn--primary ib-btn--md">{{ ic.retry }}{{ t.demoReplay }}</button>
+            <div style="font-size:26px;font-weight:600;letter-spacing:-.02em;line-height:1.2;margin:12px auto 10px;max-width:22ch">{{ t.demoEndTitle }}</div>
+            <p style="margin:0 auto 26px;font-size:14px;color:var(--text-secondary);line-height:1.5;max-width:34ch">{{ t.demoEndSub }}</p>
+            <div style="display:flex;flex-direction:column;gap:10px;align-items:stretch">
+              <button onClick="{{ onBook }}" class="ib-btn ib-btn--primary ib-btn--md" style="justify-content:center">{{ t.demoBook }}</button>
+              <div style="display:flex;gap:10px;justify-content:center">
+                <button onClick="{{ onSkipDemo }}" class="ib-btn ib-btn--ghost ib-btn--md">{{ t.demoClose }}</button>
+                <button onClick="{{ onReplayDemo }}" class="ib-btn ib-btn--ghost ib-btn--md">{{ ic.retry }}{{ t.demoReplay }}</button>
+              </div>
             </div>
           </div>
         </div>
@@ -1690,7 +1708,7 @@
 
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900},&quot;startScreen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;app&quot;,&quot;signin&quot;,&quot;expired&quot;,&quot;pending&quot;,&quot;first&quot;],&quot;default&quot;:&quot;app&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Prototype state&quot;},&quot;boardState&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;normal&quot;,&quot;empty&quot;,&quot;new&quot;,&quot;loading&quot;],&quot;default&quot;:&quot;normal&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Prototype state&quot;},&quot;firstMonth&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Prototype state&quot;},&quot;role&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;admin&quot;,&quot;operator&quot;],&quot;default&quot;:&quot;admin&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Prototype state&quot;},&quot;confirmStarts&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Prototype state&quot;},&quot;scopeV2&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Prototype state&quot;},&quot;ocrEnabled&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Prototype state&quot;},&quot;uploadCheck&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;pass&quot;,&quot;size&quot;,&quot;malware&quot;,&quot;type&quot;,&quot;scanner&quot;,&quot;unreadable&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Prototype state&quot;},&quot;language&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;pt&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Localization&quot;},&quot;userName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Pedro Santos&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Signed-in user&quot;},&quot;companyName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;XBS Log&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Signed-in user&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900},&quot;startScreen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;app&quot;,&quot;signin&quot;,&quot;expired&quot;,&quot;pending&quot;,&quot;first&quot;],&quot;default&quot;:&quot;app&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Prototype state&quot;},&quot;boardState&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;normal&quot;,&quot;empty&quot;,&quot;new&quot;,&quot;loading&quot;],&quot;default&quot;:&quot;normal&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Prototype state&quot;},&quot;firstMonth&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Prototype state&quot;},&quot;role&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;admin&quot;,&quot;operator&quot;],&quot;default&quot;:&quot;admin&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Prototype state&quot;},&quot;confirmStarts&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Prototype state&quot;},&quot;scopeV2&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Prototype state&quot;},&quot;ocrEnabled&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Prototype state&quot;},&quot;uploadCheck&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;pass&quot;,&quot;size&quot;,&quot;malware&quot;,&quot;type&quot;,&quot;scanner&quot;,&quot;unreadable&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Prototype state&quot;},&quot;language&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;pt&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Localization&quot;},&quot;userName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Pedro Santos&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Signed-in user&quot;},&quot;companyName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;XBS Log&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Signed-in user&quot;},&quot;bookingUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://cal.com/nunocgoncalves/30min&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Prototype state&quot;}}">
 const ICONS = {
   mark:'<path d="M4 5h5l3 4"/><path d="M4 12h6"/><path d="M4 19h5l3-4"/><path d="M12 9l4 3-4 3"/><circle cx="18" cy="12" r="2.4"/>',
   dashboard:'<rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/>',
@@ -1782,8 +1800,9 @@ const T = {
     tRetry:'Revised attempt started', tRetryMsg:'The work item moved back to In progress. Original outcome preserved.',
     tResolved:'Response sent', tResolvedMsg:'The work item returned to In progress and the agent resumed.',
     kReceived:'Received', kStarted:'Started', kWaiting:'Waiting', kCompleted:'Completed',
-    demoBtn:'Demo', demoSkip:'Skip', demoEndLabel:'Business value created this month', demoReplay:'Replay', demoClose:'Close',
-    demoEndSub:'Every workflow, watched and measured in one operational view.',
+    demoBtn:'Demo', demoSkip:'Skip', demoEndLabel:'Next step', demoReplay:'Replay', demoClose:'Close',
+    demoEndTitle:'Find the bottleneck. Then remove it.', demoBook:'Book a 30-minute call',
+    demoEndSub:'Let\u2019s map where work stalls in your operation and what it would take to clear it.',
     viewWorkflowTip:'Open workflow',
     navChat:'Chat', islandThreads:'Conversations', newThread:'New conversation', threadEmpty:'No conversations yet',
     navStopped:'Stopped', chatFooter:'Actions here change real work. You can cancel a run \u2014 steps already completed stand.',
@@ -1872,8 +1891,9 @@ const T = {
     tRetry:'Nova tentativa iniciada', tRetryMsg:'O item voltou para Em curso. Resultado original preservado.',
     tResolved:'Resposta enviada', tResolvedMsg:'O item voltou para Em curso e o agente retomou o trabalho.',
     kReceived:'Recebido', kStarted:'Iniciado', kWaiting:'Em espera', kCompleted:'Concluído',
-    demoBtn:'Demo', demoSkip:'Saltar', demoEndLabel:'Valor de negócio criado este mês', demoReplay:'Repetir', demoClose:'Fechar',
-    demoEndSub:'Cada fluxo de trabalho, monitorizado e medido numa só vista operacional.',
+    demoBtn:'Demo', demoSkip:'Saltar', demoEndLabel:'Próximo passo', demoReplay:'Repetir', demoClose:'Fechar',
+    demoEndTitle:'Encontre o gargalo. Depois elimine-o.', demoBook:'Agendar uma chamada de 30 minutos',
+    demoEndSub:'Vamos mapear onde o trabalho para na sua operação e o que é preciso para o desbloquear.',
     viewWorkflowTip:'Abrir fluxo de trabalho',
     navChat:'Chat', islandThreads:'Conversas', newThread:'Nova conversa', threadEmpty:'Ainda sem conversas',
     navStopped:'Parado', chatFooter:'As ações aqui alteram trabalho real. Pode cancelar uma execução \u2014 os passos já concluídos mantêm-se.',
@@ -2446,7 +2466,7 @@ const IDENT = [
 ];
 
 const initialRoute = typeof window!=='undefined' && window.location.hash==='#workflow' ? 'workflow' : 'chat';
-
+const DEMO_BAR_H = 52;
 class Component extends DCLogic {
   state = {
     route:initialRoute, selectedWf:initialRoute==='workflow'?'quote':null, openItemId:null, lang:'en', island:null,
@@ -2468,9 +2488,46 @@ class Component extends DCLogic {
   q(sel){ try{return document.querySelector(sel);}catch(e){return null;} }
   qText(sel,re){ const all=[...document.querySelectorAll(sel)].filter(e=>re.test(e.textContent)&&e.offsetParent);
     return all.find(e=>!all.some(o=>o!==e&&e.contains(o)))||all[0]; }
-  setDemo(patch){ this.setState(s=>({demo:s.demo?{...s.demo,...patch}:s.demo})); }
+  setDemo(patch){ if(patch && patch.beatKey!==undefined && patch.beatKey!==this._capKey){ this._capKey=patch.beatKey;
+      // a beat that scrolled its target into view pre-decided the side; otherwise re-latch on first spot
+      this._capSide = (this._sideFor && this._sideFor.key===patch.beatKey) ? this._sideFor.side : null; }
+    this.setState(s=>({demo:s.demo?{...s.demo,...patch}:s.demo})); }
+  // A beat that scrolls its own target centres it in the free band, so the bar can stay at the
+  // bottom. Only beats that spotlight wherever the element already sits need to flip.
+  pinSide(key,side){ this._sideFor={key:key,side:side}; if(this._capKey===key) this._capSide=side; return side; }
+  // narration side is decided ONCE per beat (latched) so rAF spot tracking can't thrash it
+  capSide(spot){ if(this._capSide) return this._capSide;
+    if(!spot) return 'bottom';
+    const vh=(typeof window!=='undefined'?window.innerHeight:900);
+    const mid=(parseFloat(spot.y)||0)+(parseFloat(spot.h)||0)/2;
+    this._capSide = mid > vh*0.5 ? 'top' : 'bottom';
+    return this._capSide; }
+  headerH(){ const el=this._islandRef&&this._islandRef.current;
+    return el?Math.round(el.getBoundingClientRect().height):60; }
   sched(fn,t){ this.demoTimers=this.demoTimers||[]; this.demoTimers.push(setTimeout(()=>{ if(this.state.demo) fn(); },t*2)); }
-  componentDidMount(){ this.startChartAnim(); this._islandKeys=e=>{ if(e.key==='Escape'&&this.state.island) this.setState({island:null}); if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){ e.preventDefault(); this.setState({island:'search'}); if(this._searchRef&&this._searchRef.current) this._searchRef.current.focus(); } }; window.addEventListener('keydown',this._islandKeys); if(this.props.language && this.props.language!==this.state.lang) this.setState({lang:this.props.language}); if(this.props.autoplay){ this._autoIv=setTimeout(()=>this.startDemo(),700); } this._rootRef=this._rootRef||React.createRef(); this._onResize=()=>{ const el=this._rootRef.current; const w=el&&el.offsetWidth?el.offsetWidth:window.innerWidth; if(w!==this.state.vw) this.setState({vw:w}); }; window.addEventListener('resize',this._onResize); if(window.ResizeObserver&&this._rootRef.current){ this._ro=new ResizeObserver(()=>this._onResize()); this._ro.observe(this._rootRef.current); } this._onResize(); }
+  componentDidMount(){ this.startChartAnim(); this._islandKeys=e=>{ if(e.key==='Escape'&&this.state.island) this.setState({island:null}); if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){ e.preventDefault(); this.setState({island:'search'}); if(this._searchRef&&this._searchRef.current) this._searchRef.current.focus(); } }; window.addEventListener('keydown',this._islandKeys); if(this.props.language && this.props.language!==this.state.lang) this.setState({lang:this.props.language}); if(this.props.autoplay){ this._autoIv=setTimeout(()=>this.startDemo(),700); } this._rootRef=this._rootRef||React.createRef(); this._onResize=()=>{ const el=this._rootRef.current; const w=el&&el.offsetWidth?el.offsetWidth:window.innerWidth; if(w!==this.state.vw) this.setState({vw:w}); }; window.addEventListener('resize',this._onResize); if(window.ResizeObserver&&this._rootRef.current){ this._ro=new ResizeObserver(()=>this._onResize()); this._ro.observe(this._rootRef.current); } this._onResize(); if(this.props.autoplay) this.initCal(); }
+  initCal(){
+    if(window.IterabaseBooking){ window.IterabaseBooking.init(); return; }
+    const C=window, A='https://app.cal.com/embed/embed.js', L='init';
+    const p=(a,ar)=>{ a.q.push(ar); };
+    if(!C.Cal){
+      C.Cal=function(){ const cal=C.Cal, ar=arguments;
+        if(!cal.loaded){ cal.ns={}; cal.q=cal.q||[]; const s=document.createElement('script'); s.src=A; document.head.appendChild(s); cal.loaded=true; }
+        if(ar[0]===L){ const api=function(){ p(api,arguments); }; const ns=ar[1]; api.q=api.q||[];
+          if(typeof ns==='string'){ cal.ns[ns]=cal.ns[ns]||api; p(cal.ns[ns],ar); p(cal,['initNamespace',ns]); } else p(cal,ar);
+          return; }
+        p(cal,ar); };
+    }
+    try{ C.Cal('init','30min',{origin:'https://app.cal.com'}); C.Cal.ns['30min']('ui',{hideEventTypeDetails:false,layout:'month_view'}); }catch(e){}
+  }
+  onBook(){
+    const bookingUrl=this.props.bookingUrl||'https://cal.com/nunocgoncalves/30min';
+    if(window.IterabaseBooking){ window.IterabaseBooking.open({location:'demo_end',bookingUrl}); return; }
+    const link=bookingUrl.replace(/^https?:\/\/(app\.)?cal\.com\//,'').replace(/^\/+|\/+$/g,'');
+    const ns=window.Cal&&window.Cal.ns&&window.Cal.ns['30min'];
+    if(!ns) return;
+    try{ ns('modal',{calLink:link,config:{layout:'month_view'}}); }catch(e){}
+  }
   componentDidUpdate(prev, prevState){ if(this.props.scopeV2!==prev.scopeV2){ this.setState({items:seedItems(this.props.scopeV2!==false), openItemId:null, failCleared:{}, failGuidance:{}}); } if(this.props.language && this.props.language!==prev.language){ this.setState({lang:this.props.language}); } if(this._lastRoute!==this.state.route){ this._lastRoute=this.state.route; if(/^(dashboard|workflows|workflow)$/.test(this.state.route)) this.startChartAnim(); } }
   startChartAnim(){
     if(this._caRaf) cancelAnimationFrame(this._caRaf);
@@ -2488,7 +2545,15 @@ class Component extends DCLogic {
   spotEl(el,pad){ if(!el) return null; const b=el.getBoundingClientRect(); pad=pad==null?12:pad; return {x:Math.round(b.left-pad)+'px',y:Math.round(b.top-pad)+'px',w:Math.round(b.width+2*pad)+'px',h:Math.round(b.height+2*pad)+'px'}; }
   cursorEl(el,ox,oy){ if(!el) return {}; const b=el.getBoundingClientRect(); return {cx:Math.round(b.left+(ox==null?b.width/2:ox))+'px', cy:Math.round(b.top+(oy==null?Math.min(b.height/2,28):oy))+'px'}; }
   focusEl(el,cap,sub,step,prog,opts){ opts=opts||{}; const c=this.cursorEl(el,opts.ox,opts.oy); this.setDemo({caption:cap,sub:sub||'',step:step,progress:prog,beatKey:step, spot: opts.spot===false?null:this.spotEl(el,opts.pad), fullScrim:false, clicking:false, ...c}); }
-  smoothTop(){ if(typeof window==='undefined') return; const sc=[...document.querySelectorAll('div')].find(d=>{const st=getComputedStyle(d);return st.overflowY==='auto'&&d.scrollTop>4&&d.clientWidth>600;}); if(sc) sc.scrollTo({top:0,behavior:'smooth'}); try{window.scrollTo({top:0,behavior:'smooth'});}catch(e){window.scrollTo(0,0);} }
+  scrollHost(){ if(typeof window==='undefined') return null;
+    const min=Math.min(600,window.innerWidth*0.6);
+    const cands=[...document.querySelectorAll('div')].filter(d=>{const st=getComputedStyle(d);
+      return (st.overflowY==='auto'||st.overflowY==='scroll')&&d.clientWidth>=min&&d.scrollHeight>d.clientHeight+8;});
+    cands.sort((a,b)=>(b.clientWidth*b.clientHeight)-(a.clientWidth*a.clientHeight));
+    return cands[0]||null; }
+  smoothTop(){ if(typeof window==='undefined') return; const sc=this.scrollHost();
+    if(sc&&sc.scrollTop>4) sc.scrollTo({top:0,behavior:'smooth'});
+    try{window.scrollTo({top:0,behavior:'smooth'});}catch(e){window.scrollTo(0,0);} }
   trackSpot(el,pad,cur){ this._spotEl=el; this._spotPad=pad; this._spotCur=cur||null; this._spotKey=null;
     if(this._spotRaf) return;
     const tick=()=>{ this._spotRaf=null; const e=this._spotEl;
@@ -2523,9 +2588,15 @@ class Component extends DCLogic {
     const panel=()=>this.q('[data-demo="panel"]');
     const inPanel=sel=>{ const p=panel(); return p?p.querySelector(sel):null; };
     const btnIn=(root,re)=>root?[...root.querySelectorAll('button')].find(b=>re.test(b.textContent)&&b.offsetParent):null;
-    const mainScroll=()=>[...document.querySelectorAll('div')].find(d=>{const st=getComputedStyle(d);return st.overflowY==='auto'&&d.clientWidth>600&&d.scrollHeight>d.clientHeight+8;});
+    const mainScroll=()=>this.scrollHost();
     const panelScroll=()=>{ const p=panel(); return p?[...p.querySelectorAll('div')].find(d=>getComputedStyle(d).overflowY==='auto'):null; };
-    const scrollToEl=(el,off)=>{ if(!el) return; const pad=off==null?130:off; const c=mainScroll();
+    const scrollToEl=(el,off,side)=>{ if(!el) return; const c=mainScroll();
+      // on phones the narration bar owns an edge — centre the target in the band that's left over
+      let pad=off==null?130:off;
+      if(this.state.vw && this.state.vw<760){ const vh=window.innerHeight, bar=DEMO_BAR_H+12;
+        const topRes=this.headerH()+8+(side==='top'?bar:0), botRes=(side==='top'?12:bar);
+        const free=vh-topRes-botRes, h=el.getBoundingClientRect().height;
+        pad=Math.round(topRes+Math.max(8,(free-Math.min(h,free))/2)); }
       if(c){ const b=el.getBoundingClientRect(), cb=c.getBoundingClientRect(); c.scrollTo({top:Math.max(0,c.scrollTop+b.top-cb.top-pad),behavior:'smooth'}); return; }
       try{ window.scrollTo({top:Math.max(0,window.scrollY+el.getBoundingClientRect().top-pad),behavior:'smooth'}); }catch(e){} };
     const scrollPanel=(el,off)=>{ const c=panelScroll(); if(!c) return;
@@ -2540,14 +2611,24 @@ class Component extends DCLogic {
       if(o.spot!==false && el) this.trackSpot(el,o.pad,o.cursor?{ox:o.ox,oy:o.oy}:null); else this.stopTrack(); };
     const say=(cap,sub,step,prog,key,scrim)=>this.setDemo({caption:cap,sub:sub||'',step:step,progress:prog,beatKey:key,spot:null,fullScrim:!!scrim,showCursor:false});
     // scroll a target into view, then spotlight it once the scroll has settled
-    const settled=(getEl,fn)=>{ const c=mainScroll(); let last=c?c.scrollTop:(window.scrollY||0), still=0;
+    const inBand=el=>{ if(!el) return true; const b=el.getBoundingClientRect(), vh=window.innerHeight;
+      const bar=(this.state.vw&&this.state.vw<760)?DEMO_BAR_H+12:0;
+      return b.top < vh-bar-8 && b.bottom > this.headerH(); };
+    const settled=(getEl,fn)=>{ const c=mainScroll(); let last=c?c.scrollTop:(window.scrollY||0), still=0, frames=0;
       const tick=()=>{ if(!this.state.demo) return; const now=c?c.scrollTop:(window.scrollY||0);
-        still = Math.abs(now-last)<0.5 ? still+1 : 0; last=now;
-        if(still>=3) fn(); else requestAnimationFrame(tick); };
+        still = Math.abs(now-last)<0.5 ? still+1 : 0; last=now; frames++;
+        // never fire a beat on a target that is still off-screen (a missing scroll host used to
+        // read as instantly "still" and the beat landed on an invisible element)
+        if(still>=3 && (inBand(getEl()) || frames>150)) fn(); else requestAnimationFrame(tick); };
       requestAnimationFrame(tick); };
     const reveal=(t,getEl,cap,sub,step,prog,key,o)=>{ o=o||{};
-      at(t,()=>{ this.stopTrack(); this.setDemo({spot:null,showCursor:false}); scrollToEl(getEl(),o.off);
-        settled(getEl,()=>beat(getEl(),cap,sub,step,prog,key,o)); }); };
+      at(t,()=>{ this.stopTrack(); this.setDemo({spot:null,showCursor:false});
+        const side=this.pinSide(key,'bottom'); scrollToEl(getEl(),o.off,side);
+        settled(getEl,()=>{ beat(getEl(),cap,sub,step,prog,key,o);
+          // chained follow-ups fire relative to when the beat ACTUALLY lands, not on the
+          // absolute clock — on mobile the stacked board scrolls much further, so a
+          // fixed at() would open the item before it was ever highlighted
+          (o.after||[]).forEach(([d,fn])=>this.sched(fn,d/2)); }); }); };
 
     // ── 01 · chat: work starts with a request ──────────
     at(250,()=>beat(this.q('[data-demo="composer"]'),D.b0c,D.b0s,'01','4%','chat',{pad:8,cursor:true,ox:70,oy:22}));
@@ -2620,11 +2701,9 @@ class Component extends DCLogic {
 
     // ── 05 · a finished run leaves a result ────────────
     at(44580,()=>{ this.setState({toast:null, failOpen:false}); });
-    reveal(44980,()=>card(/Meridian Shipping/),D.b5c,D.b5s,'06','70%','donecard',{pad:8,cursor:true});
-    at(46380,()=>this.clickPulse());
-    at(46630,()=>this.openItem('d1'));
-    at(47030,()=>beat(panel(),D.b5c,D.b5s,'06','72%','donepanel',{pad:0}));
-    at(47780,()=>{ scrollPanel(null); at(500,()=>beat(secBlock(/Result & artifacts|Resultado e artefactos/),D.b5o,D.b5os,'06','75%','artifacts',{pad:8})); });
+    reveal(44980,()=>card(/Meridian Shipping/),D.b5c,D.b5s,'06','70%','donecard',{pad:8,cursor:true,
+      after:[[1400,()=>this.clickPulse()],[1650,()=>this.openItem('d1')],[2050,()=>beat(panel(),D.b5c,D.b5s,'06','72%','donepanel',{pad:0})],
+             [2800,()=>{ scrollPanel(null); at(500,()=>beat(secBlock(/Result & artifacts|Resultado e artefactos/),D.b5o,D.b5os,'06','75%','artifacts',{pad:8})); }]]});
     at(50380,()=>{ const blk=this.q('[data-demo="source"]')||secBlock(/Original source|Origem original/); scrollPanel(blk);
       at(520,()=>beat(this.q('[data-demo="source"]')||secBlock(/Original source|Origem original/),D.b5t,D.b5ts,'06','78%','trigger',{pad:8})); });
     at(52980,()=>{ const link=btnIn(panel(),/Quotation Processing|Processamento de cota/); beat(link,D.b5w,D.b5ws,'06','80%','wflink',{pad:6,cursor:true,ox:42,oy:11}); });
@@ -3065,8 +3144,10 @@ class Component extends DCLogic {
     const vw=s.vw||1440, mob=vw<760, mid=vw<1120;
     if(!this._rootRef) this._rootRef=React.createRef();
     const rsp={
+      islandRef:(this._islandRef=this._islandRef||React.createRef()),
       rootRef:this._rootRef,
-      pagePad: mob?'70px 14px 44px':'84px 24px 60px',
+      pagePad: mob?(s.demo?('70px 14px '+(DEMO_BAR_H+14)+'px'):'70px 14px 44px'):'84px 24px 60px',
+      demoBarH:DEMO_BAR_H,
       islandPad: mob?'8px 8px 0':'14px 16px 0',
       islandMaxW: mob?'calc(100vw - 16px)':'calc(100vw - 32px)',
       ctxLabelMaxW: mob?'82px':'186px',
@@ -3360,7 +3441,27 @@ class Component extends DCLogic {
     }
 
     let demoVM=null;
-    if(s.demo){ if(s.demo.spot) this._lastSpot=s.demo.spot; const box=s.demo.spot||this._lastSpot||{x:'50vw',y:'50vh',w:'0px',h:'0px'}; demoVM={...s.demo, spotBox:box, spotOn:s.demo.spot?1:0, cursorOn:s.demo.showCursor?1:0}; }
+    if(s.demo){ if(s.demo.spot) this._lastSpot=s.demo.spot; const box=s.demo.spot||this._lastSpot||{x:'50vw',y:'50vh',w:'0px',h:'0px'};
+      // narration placement: on phones it flips to whichever half the spotlight is NOT in
+      const toTop = mob && this.capSide(s.demo.spot)==='top';
+      const cap = mob ? {
+        mobBar:true, wideControls:false, showSub:false,
+        capL:'0px', capR:'0px', capTx:'none', capAlign:'stretch', capGap:'0px', capPad:'0px',
+        capT: toTop?('calc(' + this.headerH() + 'px + env(safe-area-inset-top, 0px) + 8px)'):'auto',
+        capMinH: DEMO_BAR_H + 'px',
+        capB: toTop?'auto':'0px',
+        capCardW:'100%', capMaxW:'100%', capRad:'0px', capCardPad:'11px 12px calc(11px + env(safe-area-inset-bottom, 0px)) 14px',
+        capCardGap:'11px', capFs:'13.5px', capAnim:'captionInBar .3s cubic-bezier(.22,1,.36,1)'
+      } : {
+        mobBar:false, wideControls:true, showSub:!!s.demo.sub,
+        capL:'50%', capR:'auto', capTx:'translateX(-50%)', capAlign:'center', capGap:'12px', capPad:'0px',
+        capT:'auto', capB:'40px',
+        capCardW:'auto', capMaxW:'80vw', capRad:'12px', capCardPad:'14px 20px', capMinH:'0px',
+        capCardGap:'14px', capFs:'15px', capAnim:'captionIn .4s cubic-bezier(.22,1,.36,1)'
+      };
+      demoVM={...s.demo, ...cap, spotBox:box, spotOn:s.demo.spot?1:0, barSide:toTop?'top':'bottom',
+        showCursor:!mob&&s.demo.showCursor, cursorOn:(!mob&&s.demo.showCursor)?1:0,
+        tap: mob && !!s.demo.clicking }; }
     if(!this._searchRef) this._searchRef=React.createRef();
     const q=s.search.trim().toLowerCase(), hasQuery=!!q;
     const rowBase='display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:8px 10px;border:none;border-radius:var(--radius-md);cursor:pointer;font-family:var(--font-sans);color:var(--text-primary);background:';
@@ -3647,7 +3748,7 @@ class Component extends DCLogic {
     const extraVM={
       isChat, isSettings, isAdmin, inApp, isAdminRole,
       showValue:isAdminRole,
-      showValueReveal:isAdminRole && inApp && !!s.vrOpen,
+      showValueReveal:isAdminRole && inApp && !!s.vrOpen && !(mob&&s.demo),
       valueTicker:this.fmt(s.vrN!=null?s.vrN:totalValue),
       valueRevealLabel:(s.lang==='pt'?'valor criado · 30 dias':'value created · 30 days'),
       revealTop: mob?'86px':'80px', revealZ:59,
@@ -3721,7 +3822,7 @@ class Component extends DCLogic {
       onDragOver:e=>{ e.preventDefault(); if(!s.dragOver) this.setState({dragOver:true}); },
       onDragLeave:e=>{ if(e.currentTarget.contains(e.relatedTarget)) return; this.setState({dragOver:false}); },
       onDrop:e=>this.onDrop(e), isDragging:s.dragOver,
-      composerStyle:'display:flex;flex-direction:column;gap:8px;background:var(--surface);border:1px solid '+(s.dragOver?'var(--accent)':'var(--border-strong)')+';border-radius:var(--radius-lg);padding:8px 8px 8px 10px;box-shadow:var(--shadow-md);transition:border-color var(--duration-fast,.14s) ease-out',
+      composerStyle:'display:flex;flex-direction:column;gap:8px;background:var(--surface);border:1px solid '+(s.dragOver?'var(--accent)':'var(--border-strong)')+';border-radius:var(--radius-lg);'+((mob&&s.demo)?'margin-bottom:4px;':'')+'padding:8px 8px 8px 10px;box-shadow:var(--shadow-md);transition:border-color var(--duration-fast,.14s) ease-out',
       attachBtnStyle:'width:34px;height:34px;margin-bottom:2px;border:1px solid '+(s.attachMenu?'var(--border-strong)':'transparent')+';border-radius:var(--radius-md);background:'+(s.attachMenu?'var(--surface-sunken)':'transparent')+';color:var(--text-tertiary);display:flex;align-items:center;justify-content:center;cursor:pointer',
       chatBusy:s.chatBusy, suggestions, chatThreadTitle:thread?L(thread.title):t.newThread,
       sendStyle:'width:38px;height:38px;border:none;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;flex:none;cursor:pointer;transition:background var(--duration-fast) var(--ease-out);'+
@@ -3779,6 +3880,9 @@ class Component extends DCLogic {
         clockBig:ic('clock',20)
       },
       demo:demoVM, demoTotal:this.fmt(totalValue),
+      bookingUrl:this.props.bookingUrl || 'https://cal.com/nunocgoncalves/30min',
+      onBook:()=>this.onBook(),
+      calLink:(this.props.bookingUrl || 'https://cal.com/nunocgoncalves/30min').replace(/^https?:\/\/(app\.)?cal\.com\//,'').replace(/^\/+|\/+$/g,''),
       onStartDemo:()=>this.startDemo(), onSkipDemo:()=>this.stopDemo(), onReplayDemo:()=>this.startDemo(),
       isDashboard, isWorkflows, isWorkflowDetail, routeKey, showBoard: isDashboard||isWorkflowDetail,
       pageTitle: isWorkflows||isWorkflowDetail ? (isWorkflowDetail? (wfDetail?wfDetail.name:'') : t.navWorkflows) : t.navDashboard,
@@ -3800,7 +3904,7 @@ class Component extends DCLogic {
       panelOpen:!!oi, item,
       showRetry:s.showRetry && !!oi, showValuePopover:!!s.valuePopover, valuePopover,
       onCloseValue:()=>this.setState({valuePopover:null}), noop:e=>e.stopPropagation(),
-      toast:s.toast, ...rsp, ...islandVM, ...extraVM
+      toast:(mob&&s.demo)?null:s.toast, ...rsp, ...islandVM, ...extraVM
     };
   }
 }

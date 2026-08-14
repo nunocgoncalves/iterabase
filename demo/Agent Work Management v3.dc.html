@@ -2445,9 +2445,11 @@ const IDENT = [
   {key:'slack', icon:'api', name:'Slack', detail:{en:'Not connected', pt:'Não ligado'}, linked:false}
 ];
 
+const initialRoute = typeof window!=='undefined' && window.location.hash==='#workflow' ? 'workflow' : 'chat';
+
 class Component extends DCLogic {
   state = {
-    route:'chat', selectedWf:null, openItemId:null, lang:'en', island:null,
+    route:initialRoute, selectedWf:initialRoute==='workflow'?'quote':null, openItemId:null, lang:'en', island:null,
     filterWf:'all', filterPersona:'all', dateRange:'week', search:'',
     items: seedItems(this.props.scopeV2!==false),
     fbStage:'idle', fbCat:null, feedbackText:'', guidance:'', blockerInput:'',

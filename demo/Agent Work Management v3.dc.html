@@ -2719,7 +2719,7 @@ class Component extends DCLogic {
     // ── 07 · the whole operation, measured ─────────────
     at(59380,()=>{ this.setState({route:'workflows', openItemId:null}); this.smoothTop(); say(D.b1c,D.b1s,'08','90%','wfsroute',true); });
     at(60080,()=>beat(this.q('.demo-hero'),D.b1c,D.b1s,'08','91%','hero',{pad:12}));
-    at(62580,()=>beat(this.q('[data-demo="trend"]'),D.bTrend,D.bTrends,'08','93%','trend',{pad:12}));
+    reveal(62580,()=>this.q('[data-demo="trend"]'),D.bTrend,D.bTrends,'08','93%','trend',{pad:12,side:'bottom'});
     reveal(64980,()=>{ const catalogue=this.q('[data-demo="catalogue"]'); return (this.state.vw&&this.state.vw<760&&catalogue)?catalogue.firstElementChild:catalogue; },D.b5all,D.b5alls,'08','95%','catalogue',{pad:8,off:150});
 
     // ── payoff ─────────────────────────────────────────

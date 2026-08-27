@@ -2200,7 +2200,7 @@ const ITEMS = [
   {id:'t4', wf:'booking', title:'Booking confirmation — Halberg Metals', src:'schedule', status:'todo', prog:0, time:{en:'31m ago',pt:'há 31 min'}},
   {id:'t5', wf:'support', title:'Support triage — Delay on order 88231', src:'schedule', status:'todo', prog:0, time:{en:'44m ago',pt:'há 44 min'}},
   // IN PROGRESS
-  {id:'p1', wf:'quote', title:'Quotation request — ACME Logistics', src:'outlook', status:'in_progress', prog:2, br:{q4:1}, time:{en:'started 14m ago',pt:'iniciado há 14 min'}, detailed:true,
+  {id:'p1', wf:'quote', title:'Quotation request · ACME Logistics', src:'outlook', status:'in_progress', prog:2, br:{q4:1}, time:{en:'started 14m ago',pt:'iniciado há 14 min'}, detailed:true,
    source:{from:'requests@acme-logistics.com', subject:{en:'RE: Quote — 2 × 40ft HC, Rotterdam → Lisbon', pt:'RE: Cotação — 2 × 40ft HC, Roterdão → Lisboa'}},
    fields:[{k:{en:'Customer',pt:'Cliente'},v:'ACME Logistics'},{k:{en:'Origin',pt:'Origem'},v:'Rotterdam (NL)'},{k:{en:'Destination',pt:'Destino'},v:'Lisbon (PT)'},{k:{en:'Load',pt:'Carga'},v:'2 × 40ft HC'}]},
   {id:'p2', wf:'track', title:'Track & trace — BL-2290-PT', src:'schedule', status:'in_progress', prog:1, time:{en:'started 6m ago',pt:'iniciado há 6 min'}},
@@ -2208,7 +2208,7 @@ const ITEMS = [
   {id:'p4', wf:'invoice', title:'Invoice reconciliation — INV-5498', src:'api', status:'in_progress', prog:6, passes:2, time:{en:'started 9m ago',pt:'iniciado há 9 min'}},
   {id:'p5', wf:'booking', title:'Booking confirmation — Nordwind AG', src:'outlook', status:'in_progress', prog:1, time:{en:'started 17m ago',pt:'iniciado há 17 min'}},
   // BLOCKED
-  {id:'b1', wf:'quote', title:'Quotation request — Northwind Freight', src:'outlook', status:'blocked', prog:1, time:{en:'2h ago',pt:'há 2 h'}, detailed:true,
+  {id:'b1', wf:'quote', title:'Quotation request · Northwind Freight', src:'outlook', status:'blocked', prog:1, time:{en:'2h ago',pt:'há 2 h'}, detailed:true,
    blocker:{type:'info', title:{en:'Missing destination address', pt:'Endereço de destino em falta'},
      body:{en:'Marco cannot finish the quotation until the delivery destination for the Hamburg shipment is provided.', pt:'O Marco não consegue concluir a cotação sem o destino de entrega do envio de Hamburgo.'},
      prompt:{en:'Provide the destination address', pt:'Indique o endereço de destino'},
@@ -2234,7 +2234,7 @@ const ITEMS = [
      placeholder:{en:'e.g. Route to Claims — damage is primary', pt:'ex. Encaminhar para Reclamações — o dano é o principal'},
      cta:{en:'Submit decision', pt:'Submeter decisão'}}},
   // DONE
-  {id:'d1', wf:'quote', title:'Quotation request — Meridian Shipping', src:'outlook', status:'done', prog:5, time:{en:'2h ago',pt:'há 2 h'}, value:142, detailed:true,
+  {id:'d1', wf:'quote', title:'Quotation request · Meridian Shipping', src:'outlook', status:'done', prog:5, time:{en:'2h ago',pt:'há 2 h'}, value:142, detailed:true,
    outcome:{title:{en:'Quotation request processed', pt:'Pedido de cotação processado'},
      body:{en:'Classified as pricing. Customer and shipment details were extracted, and row 184 was added to the pricing workbook.', pt:'Classificado como preços. Os dados do cliente e do envio foram extraídos e a linha 184 foi adicionada à folha de preços.'}},
    artifacts:[{icon:'sheet', name:{en:'Pricing workbook · row 184', pt:'Folha de preços · linha 184'}, meta:{en:'Updated · Excel', pt:'Atualizada · Excel'}},{icon:'file', name:{en:'Quotation — Meridian Shipping.pdf', pt:'Cotação — Meridian Shipping.pdf'}, meta:{en:'Generated · PDF', pt:'Gerada · PDF'}}],
@@ -2244,7 +2244,7 @@ const ITEMS = [
   {id:'d3', wf:'customs', title:'Customs documentation — CMAU9902', src:'api', status:'done', prog:5, time:{en:'4h ago',pt:'há 4 h'}, value:56},
   {id:'d4', wf:'onboard', title:'Customer onboarding — Fjord Logistics', src:'outlook', status:'done', prog:5, time:{en:'5h ago',pt:'há 5 h'}, value:98},
   {id:'d5', wf:'track', title:'Track & trace — BL-2277-PT', src:'schedule', status:'done', prog:4, time:{en:'6h ago',pt:'há 6 h'}, value:19},
-  {id:'d6', wf:'quote', title:'Quotation request — Halcyon Traders', src:'outlook', status:'done', prog:5, time:{en:'7h ago',pt:'há 7 h'}, value:131},
+  {id:'d6', wf:'quote', title:'Quotation request · Halcyon Traders', src:'outlook', status:'done', prog:5, time:{en:'7h ago',pt:'há 7 h'}, value:131},
   {id:'d7', wf:'support', title:'Support triage — Reroute request 77120', src:'teams', status:'done', prog:4, time:{en:'8h ago',pt:'há 8 h'}, value:23},
   {id:'d8', wf:'booking', title:'Booking confirmation — Vega Shipping', src:'outlook', status:'done', prog:4, time:{en:'9h ago',pt:'há 9 h'}, value:44},
   // STOPPED BEFORE FINISHING
